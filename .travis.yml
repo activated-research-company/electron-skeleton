@@ -1,0 +1,24 @@
+language: node_js
+node_js: '10'
+install:
+  - npm install -g codecov
+  - npm install
+script:
+  - mkdir coverage
+  - npm run c8
+  - npm run coverage
+  - codecov
+after_success:
+  npm run build
+deploy:
+  on:
+    branch: master
+  provider: s3
+  region: us-east-1
+  access_key_id: $ACCESS_KEY_ID
+  secret_access_key: $SECRET_ACCESS_KEY
+  bucket: $BUCKET
+  acl: public_read
+  local_dir: dist
+  skip_cleanup: true
+  
